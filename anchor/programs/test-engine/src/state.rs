@@ -1,4 +1,14 @@
+// anchor/programs/test-engine/src/state.rs
 use anchor_lang::prelude::*;
+
+#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
+pub struct CoverageReport {
+    pub line_coverage: u8,
+    pub branch_coverage: u8,
+    pub instruction_coverage: u8,
+    pub uncovered_lines: Vec<u32>,
+    pub uncovered_branches: Vec<u32>,
+}
 
 #[account]
 pub struct TestCase {
@@ -46,13 +56,6 @@ pub enum ExecutionPhase {
     Cleanup,
     Completed,
     Failed,
-}
-
-#[derive(AnchorSerialize, AnchorDeserialize, Clone, Debug)]
-pub struct CoverageReport {
-    pub line_coverage: u8,
-    pub branch_coverage: u8,
-    pub instruction_coverage: u8,
 }
 
 #[account]

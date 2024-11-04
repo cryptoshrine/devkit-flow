@@ -16,11 +16,11 @@ use state::{
     CoverageReport,
 };
 use errors::ErrorCode;
-use instructions::RunTestParams;
+use instructions::{RunTestParams, CoverageUpdateParams}; // Updated import
 
 declare_id!("EzCvHeuefRbpjA6gXAChdQiXp6qLVsAF3jWby3wCgTiz");
 
-// Define the account structures in lib.rs
+// Define the account structures
 #[derive(Accounts)]
 pub struct CreateTest<'info> {
     #[account(mut)]
@@ -82,6 +82,20 @@ pub struct VerifyResults<'info> {
     )]
     pub result_storage: Account<'info, TestResults>,
     pub system_program: Program<'info, System>,
+}
+
+#[derive(Accounts)]
+pub struct UpdateCoverage<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    #[account(
+        mut,
+        constraint = execution_state.test_case == test_case.key(),
+        seeds = [b"execution", test_case.key().as_ref()],
+        bump
+    )]
+    pub execution_state: Account<'info, TestExecutionState>,
+    pub test_case: Account<'info, TestCase>,
 }
 
 #[program]
@@ -160,6 +174,29 @@ mod test_engine {
         test_case.updated_at = Clock::get()?.unix_timestamp;
 
         msg!("Test results verified successfully");
+        Ok(())
+    }
+
+    pub fn update_coverage(
+        ctx: Context<UpdateCoverage>, 
+        params: CoverageUpdateParams
+    ) -> Result<()> {
+        let execution = &mut ctx.accounts.execution_state;
+        
+        require!(
+            execution.current_phase == ExecutionPhase::Running,
+            ErrorCode::InvalidTestStatus
+        );
+
+        execution.current_coverage = Some(CoverageReport {
+            line_coverage: params.line_coverage,
+            branch_coverage: params.branch_coverage,
+            instruction_coverage: params.instruction_coverage,
+            uncovered_lines: params.uncovered_lines,
+            uncovered_branches: params.uncovered_branches,
+        });
+
+        msg!("Coverage data updated: {}% line coverage", params.line_coverage);
         Ok(())
     }
 }

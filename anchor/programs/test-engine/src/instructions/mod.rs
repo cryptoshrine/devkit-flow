@@ -8,7 +8,7 @@ pub struct CreateTest<'info> {
     pub authority: Signer<'info>,
     
     /// CHECK: This account is only used as a signing validator and is not written to
-    pub validator: AccountInfo<'info>,  // Added safety check comment above
+    pub validator: AccountInfo<'info>,  
     
     #[account(
         init,
@@ -21,7 +21,6 @@ pub struct CreateTest<'info> {
     
     pub system_program: Program<'info, System>,
 }
-
 
 #[derive(Accounts)]
 pub struct RunTest<'info> {
@@ -48,7 +47,6 @@ pub struct RunTest<'info> {
     
     pub system_program: Program<'info, System>,
 }
-
 
 #[derive(Accounts)]
 pub struct VerifyResults<'info> {
@@ -83,8 +81,39 @@ pub struct VerifyResults<'info> {
     pub system_program: Program<'info, System>,
 }
 
-
 #[derive(AnchorSerialize, AnchorDeserialize)]
 pub struct RunTestParams {
     pub additional_settings: Option<String>,
+    pub coverage_threshold: Option<u8>,
+}
+
+#[derive(AnchorSerialize, AnchorDeserialize)]
+pub struct CoverageUpdateParams {
+    pub line_coverage: u8,
+    pub branch_coverage: u8,
+    pub instruction_coverage: u8,
+    pub uncovered_lines: Vec<u32>,
+    pub uncovered_branches: Vec<u32>,
+}
+
+#[derive(Accounts)]
+pub struct UpdateCoverage<'info> {
+    #[account(mut)]
+    pub authority: Signer<'info>,
+    
+    #[account(
+        mut,
+        constraint = test_case.authority == authority.key()
+    )]
+    pub test_case: Account<'info, TestCase>,
+    
+    #[account(
+        mut,
+        constraint = execution_state.test_case == test_case.key(),
+        seeds = [b"execution", test_case.key().as_ref()],
+        bump
+    )]
+    pub execution_state: Account<'info, TestExecutionState>,
+    
+    pub system_program: Program<'info, System>,
 }
