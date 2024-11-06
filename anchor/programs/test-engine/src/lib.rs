@@ -16,9 +16,9 @@ use state::{
     CoverageReport,
 };
 use errors::ErrorCode;
-use instructions::{RunTestParams, CoverageUpdateParams}; // Updated import
+use instructions::{RunTestParams, CoverageUpdateParams};
 
-declare_id!("EzCvHeuefRbpjA6gXAChdQiXp6qLVsAF3jWby3wCgTiz");
+declare_id!("DRtryNc2GJrhytBQK9STjphH5wyNopKuzne34kgdbLgx");
 
 // Define the account structures
 #[derive(Accounts)]

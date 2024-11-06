@@ -5,7 +5,7 @@
  * IDL can be found at `target/idl/devkitflow.json`.
  */
 export type Devkitflow = {
-  "address": "AsjZ3kWAUSQRNt2pZVeJkywhZ6gpLpHZmJjduPmKZDZZ",
+  "address": "AmgAyoVm4Ua84UkGPSJtpK2QUAhHz9C7dNA9114iG4L3",
   "metadata": {
     "name": "devkitflow",
     "version": "0.1.0",
