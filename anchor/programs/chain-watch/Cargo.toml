@@ -18,3 +18,11 @@ idl-build = ["anchor-lang/idl-build"]
 
 [dependencies]
 anchor-lang = { version = "0.30.1", features = ["init-if-needed"] }
+anchor-spl = "0.30.1"  # Solana Program Library integration
+solana-program = "1.18"  # Core Solana program dependency for on-chain interaction
+thiserror = "1.0"  # For better error handling with custom error types
+bytemuck = { version = "1.13", features = ["derive"] }  # Utilities for zero-cost conversions between byte types
+
+[dev-dependencies]
+solana-program-test = "1.18"  # Testing framework for Solana programs
+solana-sdk = "1.18"  # Solana SDK for various Solana utilities and tools
