@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "types": ["mocha", "chai", "node"], // Added node types
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["es2015", "dom"], // Added dom for better compatibility
+    "module": "commonjs",
+    "target": "es6",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strict": true,
+    "skipLibCheck": true,
+    "sourceMap": true, // Added for better debugging
+    "outDir": "dist",
+    "declaration": true, // Added for type declarations
+    "moduleResolution": "node", // Added to ensure proper module resolution
+    "allowJs": true, // Added to allow JavaScript files
+    "baseUrl": ".", // Added for path resolution
+    "paths": { // Added for better imports
+      "*": ["node_modules/*"]
+    }
+  },
+  "include": [
+    "tests/**/*",
+    "target/types/**/*",
+    "programs/*/src/lib.rs" // Added to include Rust program sources
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

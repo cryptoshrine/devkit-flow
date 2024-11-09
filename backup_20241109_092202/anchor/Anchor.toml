@@ -1,0 +1,33 @@
+[toolchain]
+anchor_version = "0.30.1"
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+test_engine = "DRtryNc2GJrhytBQK9STjphH5wyNopKuzne34kgdbLgx"
+chain_watch = "8wq6TVhdTeWiUWXib3vxJguDE9Nm3dmV99YxFCWL3WEe"
+deploy_guard = "HK7zp26LDVy8jMbBDf8o4RuuSjYU9SUv6V47icSrw1bf"
+devkitflow = "AmgAyoVm4Ua84UkGPSJtpK2QUAhHz9C7dNA9114iG4L3"
+
+[registry]
+url = "https://api.apr.dev"
+
+[provider]
+cluster = "Localnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "npx ts-mocha -p ./tsconfig.json tests/**/*.ts --timeout 60000"
+
+
+[test]
+startup_wait = 5000
+shutdown_wait = 2000
+upgradeable = false
+
+[test.validator]
+bind_address = "127.0.0.1"
+ledger = ".anchor/test-ledger"
+rpc_port = 8899
